@@ -78,7 +78,7 @@ const MovieDetailClient = ({ id, movie }) => {
       </main>
 
       {/* Chatbot UI */}
-      <Chatbot />
+      <Chatbot movie={movie} />
     </div>
   );
 };

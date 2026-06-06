@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 
-export default function Chatbot() {
+export default function Chatbot({ movie }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, text: "Hi! How can I help you with this movie?", sender: "ai" },
@@ -21,25 +21,34 @@ export default function Chatbot() {
     }
   }, [isOpen, messages]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
     const userMessage = { id: Date.now(), text: input.trim(), sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
+    const response = await fetch(`/api/ai/movieDetailsChat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        movie: movie.title,
+        overview: movie.overview,
+        question: input.trim(),
+      }),
+    });
+
+    const aiMessage = await response.json();
+
     setInput("");
 
-    // Dummy AI reply
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          text: "Thanks for your message! I'm a demo assistant right now.",
-          sender: "ai",
-        },
-      ]);
-    }, 600);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now() + 1,
+        text: aiMessage.answers,
+        sender: "ai",
+      },
+    ]);
   };
 
   return (
