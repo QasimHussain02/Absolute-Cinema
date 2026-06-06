@@ -44,7 +44,7 @@ export default function Chatbot({ movie }) {
     setMessages((prev) => [
       ...prev,
       {
-        id: Date.now() + 1,
+        id: Date.now() + 2,
         text: aiMessage.answers,
         sender: "ai",
       },
