@@ -8,6 +8,8 @@ export async function getTrendingMovies() {
 export async function getGenres() {
   const data = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`);
   const { genres } = await data.json();
+  // console.log(genres);
+
   return genres;
 }
 
@@ -23,4 +25,14 @@ export async function getCast(id) {
   );
   const casts = await data.json();
   return casts;
+}
+
+export async function getSimilarMovies(id) {
+  const data = await fetch(
+    `${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`,
+  );
+  const { results } = await data.json();
+  // console.log(results);
+
+  return results;
 }

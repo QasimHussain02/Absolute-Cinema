@@ -1,5 +1,6 @@
 import MovieDetailClient from "@/components/movie/MovieDetailClient";
-import { getCast, getMovieDetails } from "@/services/tmdb";
+import { useSimilarMovies } from "@/hooks/useSimilarMovies";
+import { getCast, getMovieDetails, getSimilarMovies } from "@/services/tmdb";
 
 const Page = async ({ params }) => {
   const { id } = await params;

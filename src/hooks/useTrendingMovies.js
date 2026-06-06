@@ -1,4 +1,5 @@
 import { getGenres, getTrendingMovies } from "@/services/tmdb";
+import { genreObjectConverter } from "@/utils/genreObjectConverter";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTrendingMovies() {
@@ -13,6 +14,6 @@ export function useGenre() {
     queryKey: ["genres"],
     queryFn: getGenres,
     staleTime: Infinity,
-    select: (data) => Object.fromEntries(data.map((g) => [g.id, g.name])),
+    select: (data) => genreObjectConverter(data),
   });
 }
