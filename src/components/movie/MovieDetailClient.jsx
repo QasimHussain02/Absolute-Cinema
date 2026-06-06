@@ -12,89 +12,6 @@ import CastSection from "./CastSection";
 import MovieOverviewSection from "./MovieOverviewSection";
 import MovieHero from "./MovieHero";
 
-const MOCK_SIMILAR_MOVIES = [
-  {
-    id: "ritual",
-    title: "The Ritual",
-    year: 2017,
-    genre: "Horror",
-    duration: "1h 34m",
-    rating: 6.3,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDDmIJiVpY8FaogS70iFIp5yVWaoH4igrep-8ZaYWmlw9ooVv7emdtpq-VC9yL8v1A2lss1ZZyVpHJgl-Of6GSIsK4B_9S66Kg1YDGwRRG3gczyYLbrOegkMZ1Q5r0Et572_of5kYFL4kQeRvjRxjB7tRlM15n9ZPaRc7c-1J1XMkoczDThQH6PRP3XzvoUinDfbX6XLyhrbF7JF5xrjcsGmGUlhWOxr-Iuklwe3lu2Al00dsaLbYznj1lfw7me49H_ek4jEGyEoP9w",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-  {
-    id: "barbarian",
-    title: "Barbarian",
-    year: 2022,
-    genre: "Horror",
-    duration: "1h 42m",
-    rating: 7.0,
-    posterUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAl-vUvJa7vFM_nM-3ZEC1R9U4IStYaqDaB_7WwRrIjSc9inoLhJEDkWikpKUEbwgMJ1YhZ3AVZpwMbomWImPcxi71ftJIomkg1OHmY6CyeA86YfBbpyYCYTsIXB4Cv6Fth-iFjo_iVvdWtITfitymVMsF6PvuhH7ylI71Bdp5k5nW46nrv-uosMWLFubnoP7mxPnosHdSGZIypr6gKxT3Q82_86a_AyVbaPL8V7cyDStuflcyomvR-SDgrWaSiqHWsKyUnnhcvyP-b",
-  },
-];
-
 const MovieDetailClient = ({ id, movie }) => {
   const {
     data: movieDetails,
@@ -107,7 +24,6 @@ const MovieDetailClient = ({ id, movie }) => {
     error: similarMoviesError,
     isPending: similarMoviesLoading,
   } = useSimilarMovies(id);
-  console.log(similarMovies);
 
   const cast = casts?.cast;
   const genre = movieDetails.genres.map((g) => g.name).join(", ");
@@ -156,7 +72,7 @@ const MovieDetailClient = ({ id, movie }) => {
         {/* Cast section */}
         <CastSection cast={cast} />
         {/* Similar Movies Section  */}
-        <SimilarMovies movies={similarMovies} />
+        <SimilarMovies movies={similarMovies} id={id} />
       </main>
     </div>
   );

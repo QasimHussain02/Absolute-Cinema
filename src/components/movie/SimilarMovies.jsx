@@ -3,8 +3,9 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { moviePicReturn, profileReturn } from "@/utils/pictureReturn";
+import Link from "next/link";
 
-export default function SimilarMovies({ movies }) {
+export default function SimilarMovies({ movies, id }) {
   const carouselRef = useRef(null);
 
   const handleScroll = (direction) => {
@@ -57,7 +58,8 @@ export default function SimilarMovies({ movies }) {
         >
           {movies.map((movie) => {
             return (
-              <button
+              <Link
+                href={`/movie/${movie.id}`}
                 key={movie.id}
                 className="flex-none w-44 sm:w-48 text-left snap-start group cursor-pointer focus:outline-none"
               >
@@ -101,7 +103,7 @@ export default function SimilarMovies({ movies }) {
                     </span>
                   </div>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>
