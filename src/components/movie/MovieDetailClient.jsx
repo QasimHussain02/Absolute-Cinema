@@ -12,6 +12,8 @@ import CastSection from "./CastSection";
 import MovieOverviewSection from "./MovieOverviewSection";
 import MovieHero from "./MovieHero";
 
+import Chatbot from "../ai/Chatbot";
+
 const MovieDetailClient = ({ id, movie }) => {
   const {
     data: movieDetails,
@@ -55,7 +57,7 @@ const MovieDetailClient = ({ id, movie }) => {
       </div>
     );
   return (
-    <div className="bg-background text-on-background">
+    <div className="bg-background text-on-background relative">
       <MovieHero
         backdrop_paths={backdrop_paths}
         poster_paths={poster_paths}
@@ -74,6 +76,9 @@ const MovieDetailClient = ({ id, movie }) => {
         {/* Similar Movies Section  */}
         <SimilarMovies movies={similarMovies} id={id} />
       </main>
+
+      {/* Chatbot UI */}
+      <Chatbot />
     </div>
   );
 };
