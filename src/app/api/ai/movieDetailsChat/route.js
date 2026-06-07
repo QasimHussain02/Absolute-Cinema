@@ -4,7 +4,7 @@ const groq = new Groq({
   apiKey: process.env.GROK_API_KEY,
 });
 export async function POST(req) {
-  const { movie, overview, question } = await req.json();
+  const { movie, overview, message } = await req.json();
   const response = await groq.chat.completions.create({
     model: "llama-3.1-8b-instant",
     messages: [
@@ -16,12 +16,9 @@ Movie:
 Title: ${movie}
 Description: ${overview}
 
-Keep answers short and helpful.`,
+Keep answers short and helpful`,
       },
-      {
-        role: "user",
-        content: question,
-      },
+      ...message,
     ],
   });
   return Response.json({

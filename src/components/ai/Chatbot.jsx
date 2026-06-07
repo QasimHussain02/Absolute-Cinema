@@ -8,6 +8,7 @@ export default function Chatbot({ movie }) {
   const [messages, setMessages] = useState([
     { id: 1, text: "Hi! How can I help you with this movie?", sender: "ai" },
   ]);
+  const [messageHistory, setMessageHistory] = useState([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -26,20 +27,25 @@ export default function Chatbot({ movie }) {
     if (!input.trim()) return;
 
     const userMessage = { id: Date.now(), text: input.trim(), sender: "user" };
-    setMessages((prev) => [...prev, userMessage]);
+    const updatedMessage = [...messages, userMessage];
+
+    setMessages(updatedMessage);
+    setInput("");
+    const messageAi = updatedMessage.map((msg) => ({
+      role: msg.sender == "user" ? "user" : "assistant",
+      content: msg.text,
+    }));
     const response = await fetch(`/api/ai/movieDetailsChat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         movie: movie.title,
         overview: movie.overview,
-        question: input.trim(),
+        message: messageAi,
       }),
     });
 
     const aiMessage = await response.json();
-
-    setInput("");
 
     setMessages((prev) => [
       ...prev,
