@@ -179,7 +179,7 @@ export default function SearchResults() {
       <main className="pt-[120px] pb-24 px-[1.5rem] md:px-[4rem] min-h-screen max-w-[1440px] mx-auto">
         {/* Results Header */}
         <div className="mb-10">
-          <h1 className="font-['Montserrat',sans-serif] text-[48px] leading-[1.1] tracking-[-0.02em] font-extrabold text-white mb-2">
+          <h1 className="font-['Montserrat',sans-serif] text-[30px] md:text-[48px] leading-[1.1] tracking-[-0.02em] font-extrabold text-white mb-2">
             Results for &quot;{query}&quot;
           </h1>
           <p className="text-[#e9bcb6] text-[18px] leading-[1.6] font-normal">
