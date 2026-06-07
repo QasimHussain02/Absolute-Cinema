@@ -8,6 +8,8 @@ import { useSearchResults } from "@/hooks/useSearchResult";
 export default function Navbar() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
 
@@ -44,7 +46,6 @@ export default function Navbar() {
     .slice(0, 6);
 
   // Desktop dropdown: controlled by input focus/blur
-  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   const desktopBlurTimer = useRef(null);
 
   // Refs for outside-click on mobile search
@@ -53,10 +54,10 @@ export default function Navbar() {
   useEffect(() => {
     if (filteredMovies?.length > 0 && searchInput.length > 2) {
       setDesktopDropdownOpen(true);
-      setMobileSearchOpen(true);
+      setMobileDropdownOpen(true);
     } else {
       setDesktopDropdownOpen(false);
-      setMobileSearchOpen(false);
+      setMobileDropdownOpen(false);
     }
   }, [filteredMovies, searchInput]);
   // ── Close mobile search on outside click ──────────────────────────────────
@@ -284,6 +285,7 @@ export default function Navbar() {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               type="text"
+              autoComplete="off"
               placeholder="Search movies, shows…"
               style={{
                 transitionProperty: "opacity, transform",
@@ -299,7 +301,11 @@ export default function Navbar() {
 
             {/* X close */}
             <button
-              onClick={() => setMobileSearchOpen(false)}
+              onClick={() => {
+                setMobileSearchOpen(false);
+                setMobileDropdownOpen(false);
+                setSearchInput("");
+              }}
               aria-label="Close search"
               style={{
                 transitionProperty: "opacity, transform",
@@ -318,7 +324,12 @@ export default function Navbar() {
             className="absolute top-full left-4 right-4 mt-2 z-[100]"
             onMouseDown={(e) => e.preventDefault()}
           >
-            <SearchDropdown isOpen={mobileSearchOpen} />
+            <SearchDropdown
+              isOpen={mobileDropdownOpen}
+              filteredMovies={filteredMovies}
+              isPending={searchLoading}
+              isError={searchError}
+            />
           </div>
         </div>
       </header>
