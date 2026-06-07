@@ -11,6 +11,18 @@ export default function Navbar() {
   const [searchInput, setSearchInput] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
 
+  function scoreMovie(obj, searchInput) {
+    const movie = obj.title?.toLowerCase();
+    const searchKeyword = searchInput?.toLowerCase();
+    let score = 0;
+    if (movie === searchKeyword) score += 100;
+    else if (movie.startsWith(searchKeyword)) score += 10;
+    else if (movie.includes(searchKeyword)) score += 5;
+    score += obj.vote_average * 2;
+    score += obj.popularity;
+    return score;
+  }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedInput(searchInput);
@@ -23,8 +35,13 @@ export default function Navbar() {
     error: searchError,
     isPending: searchLoading,
   } = useSearchResults(debouncedInput);
-
-  console.log(movieSearchResults);
+  const filteredMovies = movieSearchResults
+    ?.map((obj) => ({
+      ...obj,
+      score: scoreMovie(obj, searchInput),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
 
   // Desktop dropdown: controlled by input focus/blur
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
@@ -33,7 +50,15 @@ export default function Navbar() {
   // Refs for outside-click on mobile search
   const mobileSearchRef = useRef(null);
   const mobileInputRef = useRef(null);
-
+  useEffect(() => {
+    if (filteredMovies?.length > 0 && searchInput.length > 2) {
+      setDesktopDropdownOpen(true);
+      setMobileSearchOpen(true);
+    } else {
+      setDesktopDropdownOpen(false);
+      setMobileSearchOpen(false);
+    }
+  }, [filteredMovies, searchInput]);
   // ── Close mobile search on outside click ──────────────────────────────────
   useEffect(() => {
     if (!mobileSearchOpen) return;
@@ -124,11 +149,9 @@ export default function Navbar() {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 type="text"
+                autoComplete="off"
+                name="search"
                 placeholder="Search..."
-                onFocus={() => {
-                  clearTimeout(desktopBlurTimer.current);
-                  setDesktopDropdownOpen(true);
-                }}
                 onBlur={() => {
                   desktopBlurTimer.current = setTimeout(
                     () => setDesktopDropdownOpen(false),
@@ -151,7 +174,12 @@ export default function Navbar() {
                 className="absolute top-full left-0 right-0 mt-2.5 z-[200]"
                 onMouseDown={(e) => e.preventDefault()}
               >
-                <SearchDropdown isOpen={desktopDropdownOpen} />
+                <SearchDropdown
+                  isOpen={desktopDropdownOpen}
+                  filteredMovies={filteredMovies}
+                  isPending={searchLoading}
+                  isError={searchError}
+                />
               </div>
             </div>
 

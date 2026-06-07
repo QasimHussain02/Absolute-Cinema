@@ -1,5 +1,7 @@
 "use client";
-import React from 'react';
+import { moviePicReturn } from "@/utils/pictureReturn";
+import Link from "next/link";
+import React from "react";
 
 // ── Mock suggestions (UI-only, no backend) ─────────────────────────────────
 const SUGGESTIONS = [
@@ -54,7 +56,12 @@ const SUGGESTIONS = [
  * Props:
  *  isOpen   – whether to show the panel
  */
-export default function SearchDropdown({ isOpen }) {
+export default function SearchDropdown({
+  isOpen,
+  filteredMovies,
+  isPending,
+  isError,
+}) {
   return (
     <div
       role="listbox"
@@ -64,9 +71,11 @@ export default function SearchDropdown({ isOpen }) {
                   bg-[#080808]/95 backdrop-blur-2xl
                   shadow-[0_24px_64px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.025)]
                   transition-all duration-300 ease-out
-                  ${isOpen
-                    ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-                    : 'opacity-0 -translate-y-3 scale-[0.96] pointer-events-none'}`}
+                  ${
+                    isOpen
+                      ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                      : "opacity-0 -translate-y-3 scale-[0.96] pointer-events-none"
+                  }`}
     >
       {/* ── Header ── */}
       <div className="flex items-center justify-between px-4 pt-3.5 pb-2">
@@ -81,9 +90,10 @@ export default function SearchDropdown({ isOpen }) {
 
       {/* ── Suggestion list ── */}
       <ul className="py-1.5">
-        {SUGGESTIONS.map((movie) => (
+        {filteredMovies?.map((movie) => (
           <li key={movie.id} role="option" aria-selected="false">
-            <button
+            <Link
+              href={`/movie/${movie.id}`}
               type="button"
               className="
                 w-full flex items-center gap-3 px-3.5 py-2.5
@@ -121,7 +131,7 @@ export default function SearchDropdown({ isOpen }) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={movie.image}
+                  src={moviePicReturn(movie.poster_path, 92)}
                   alt={movie.title}
                   className="
                     w-full h-full object-cover
@@ -145,10 +155,10 @@ export default function SearchDropdown({ isOpen }) {
                   {movie.title}
                 </p>
                 <p className="text-[11px] text-on-surface-variant/50 mt-0.5 leading-none">
-                  {movie.year}
+                  {movie.release_date.split("-")[0]}
                 </p>
                 <p className="text-[10px] text-on-surface-variant/30 mt-1 leading-none tracking-wide">
-                  {movie.genre}
+                  {/* {movie.genre} */}
                 </p>
               </div>
 
@@ -165,7 +175,7 @@ export default function SearchDropdown({ isOpen }) {
               >
                 ↗
               </span>
-            </button>
+            </Link>
           </li>
         ))}
       </ul>
