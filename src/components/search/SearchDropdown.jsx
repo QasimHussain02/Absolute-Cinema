@@ -1,51 +1,8 @@
 "use client";
 import { moviePicReturn } from "@/utils/pictureReturn";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
-
-// ── Mock suggestions (UI-only, no backend) ─────────────────────────────────
-const SUGGESTIONS = [
-  {
-    id: 1,
-    title: "Inception",
-    year: 2010,
-    genre: "Sci-Fi · Thriller",
-    image:
-      "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=72&h=104&fit=crop&crop=entropy&auto=format",
-  },
-  {
-    id: 2,
-    title: "Interstellar",
-    year: 2014,
-    genre: "Sci-Fi · Drama",
-    image:
-      "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=72&h=104&fit=crop&crop=entropy&auto=format",
-  },
-  {
-    id: 3,
-    title: "The Dark Knight",
-    year: 2008,
-    genre: "Action · Crime",
-    image:
-      "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=72&h=104&fit=crop&crop=entropy&auto=format",
-  },
-  {
-    id: 4,
-    title: "Blade Runner 2049",
-    year: 2017,
-    genre: "Sci-Fi · Neo-Noir",
-    image:
-      "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=72&h=104&fit=crop&crop=entropy&auto=format",
-  },
-  {
-    id: 5,
-    title: "Dune",
-    year: 2021,
-    genre: "Sci-Fi · Epic",
-    image:
-      "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=72&h=104&fit=crop&crop=entropy&auto=format",
-  },
-];
 
 /**
  * SearchDropdown
@@ -58,10 +15,13 @@ const SUGGESTIONS = [
  */
 export default function SearchDropdown({
   isOpen,
+  setIsOpen,
   filteredMovies,
   isPending,
   isError,
+  searchInput,
 }) {
+  const router = useRouter();
   return (
     <div
       role="listbox"
@@ -183,6 +143,10 @@ export default function SearchDropdown({
       {/* ── Footer CTA ── */}
       <div className="border-t border-white/[0.05] px-4 py-2.5">
         <button
+          onClick={() => {
+            router.push(`/search?query=${searchInput}`);
+            setIsOpen(false);
+          }}
           type="button"
           className="
             w-full text-center text-[11px] font-medium tracking-wide

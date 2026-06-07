@@ -43,7 +43,7 @@ export default function Navbar() {
       score: scoreMovie(obj, searchInput),
     }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
+    .slice(0, 5);
 
   // Desktop dropdown: controlled by input focus/blur
   const desktopBlurTimer = useRef(null);
@@ -177,9 +177,11 @@ export default function Navbar() {
               >
                 <SearchDropdown
                   isOpen={desktopDropdownOpen}
+                  setIsOpen={setDesktopDropdownOpen}
                   filteredMovies={filteredMovies}
                   isPending={searchLoading}
                   isError={searchError}
+                  searchInput={searchInput}
                 />
               </div>
             </div>
@@ -326,7 +328,9 @@ export default function Navbar() {
           >
             <SearchDropdown
               isOpen={mobileDropdownOpen}
+              setIsOpen={setMobileDropdownOpen}
               filteredMovies={filteredMovies}
+              searchInput={searchInput}
               isPending={searchLoading}
               isError={searchError}
             />
