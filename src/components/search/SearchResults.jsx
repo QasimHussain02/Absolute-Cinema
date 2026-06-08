@@ -4,8 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../layout/Navbar";
 import { useSearchParams } from "next/navigation";
 import { useSearchResults } from "@/hooks/useSearchResult";
-import { moviePicReturn } from "@/utils/pictureReturn";
-import Link from "next/link";
+import MovieCard from "../movie/MovieCard";
 
 export default function SearchResults() {
   const params = useSearchParams();
@@ -189,45 +188,14 @@ export default function SearchResults() {
         {/* Movie Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[1.5rem]">
           {movieSearchResults?.map((movie) => (
-            <Link
-              href={`/movie/${movie.id}`}
+            <MovieCard
               key={movie.id}
-              className="group relative flex flex-col gap-3 cursor-pointer"
-            >
-              <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-[#2a2a2a] transition-transform duration-300 group-hover:scale-105 group-hover:z-10 group-hover:shadow-2xl group-hover:shadow-black">
-                <img
-                  className="w-full h-full object-cover"
-                  src={moviePicReturn(movie.poster_path)}
-                  alt={movie.title}
-                />
-
-                {/* Rating Badge */}
-                <div
-                  className={`absolute bg-yellow-500 top-2 right-2 px-2 py-1  rounded font-['Plus_Jakarta_Sans',sans-serif] text-[13px] leading-none font-medium text-black`}
-                >
-                  {Math.round(movie.vote_average)}/10
-                </div>
-
-                {/* Hover Scrim Overlay */}
-                <div className="movie-overlay absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <button className="w-full py-2 bg-primary-container text-white rounded-lg font-label-caps text-label-caps mb-2 hover:bg-primary-container/90 transition-colors">
-                    Watch Trailer
-                  </button>
-                  <button className="w-full py-2 bg-transparent border border-white/20 text-white rounded-lg font-label-caps text-label-caps hover:bg-white/10 transition-colors">
-                    Add to List
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-white font-['Montserrat',sans-serif] text-[14px] leading-[1.4] font-medium truncate">
-                  {movie.title}
-                </h3>
-                <p className="text-[#e9bcb6] font-['Plus_Jakarta_Sans',sans-serif] text-[12px] leading-none tracking-[0.05em] font-semibold mt-0.5">
-                  {movie.release_date.split("-")[0]}
-                </p>
-              </div>
-            </Link>
+              movie={movie}
+              showTrailerModal={true}
+              showGenre={false}
+              ratingStyle="simple"
+              size="compact"
+            />
           ))}
         </div>
       </main>

@@ -1,5 +1,6 @@
 import ReactClient from "@/ReactClient";
 import "@/styles/globals.css";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "Absolute Cinema",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className="dark">
       <body className="bg-surface text-on-surface antialiased font-body-md min-h-screen overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
         <ReactClient>{children}</ReactClient>
+        <Toaster />
       </body>
     </html>
   );
