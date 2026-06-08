@@ -42,3 +42,16 @@ export async function getSearchMovie(query) {
   const { results } = await data.json();
   return results;
 }
+
+export async function getMovieTrailer(id) {
+  const data = await fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`);
+  const { results } = await data.json();
+  const officialTrailers = results?.find(
+    (trailer) =>
+      trailer.site == "YouTube" &&
+      trailer.type == "Trailer" &&
+      trailer.official,
+  );
+  const { key } = officialTrailers;
+  return key;
+}

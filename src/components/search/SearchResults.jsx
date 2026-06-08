@@ -16,7 +16,6 @@ export default function SearchResults() {
     error: searchError,
     isPending: searchLoading,
   } = useSearchResults(query);
-  console.log(movieSearchResults);
 
   // State management
   const [searchQuery, setSearchQuery] = useState("the batman");
@@ -127,7 +126,7 @@ export default function SearchResults() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("Load more cinematic content...");
+            // console.log("Load more cinematic content...");
           }
         });
       },
