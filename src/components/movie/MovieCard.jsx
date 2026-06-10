@@ -34,7 +34,10 @@ export default function MovieCard({
   // Genre handling (only if genres prop is provided and showGenre is true)
   const genre =
     showGenre && genres && movie.genre_ids
-      ? movie.genre_ids.map((id) => genres[id]).join(", ").split(",")[0]
+      ? movie.genre_ids
+          .map((id) => genres[id])
+          .join(", ")
+          .split(",")[0]
       : null;
 
   // Badge color logic
@@ -81,7 +84,9 @@ export default function MovieCard({
   return (
     <>
       <Link href={`/movie/${id}`} className="group flex flex-col gap-4">
-        <div className={`relative ${classes.container} overflow-hidden movie-card cursor-pointer`}>
+        <div
+          className={`relative ${classes.container} overflow-hidden movie-card cursor-pointer`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={poster}
@@ -95,7 +100,9 @@ export default function MovieCard({
             <div
               className={`absolute top-1 right-2 px-2 py-1 rounded-full flex items-center gap-1 font-label-caps text-label-caps ${badgeTextClass || "text-white"} ${badgeColor}`}
             >
-              <span className="material-symbols-outlined text-[10px]">star</span>
+              <span className="material-symbols-outlined text-[10px]">
+                star
+              </span>
               <span className={badgeTextClass || ""}>{rating}</span>
             </div>
           )}
@@ -118,10 +125,7 @@ export default function MovieCard({
           {/* Hover Scrim Overlay */}
           {showOverlay && (
             <div
-              className={`movie-overlay absolute inset-0 flex flex-col justify-end ${classes.overlayPadding} transition-all duration-300 ${
-                size === "default"
-                  ? "opacity-100 bg-transparent backdrop-blur-none md:opacity-0 md:bg-black/40 md:backdrop-blur-sm md:group-hover:opacity-100"
-                  : "opacity-0 group-hover:opacity-100 bg-black/40 backdrop-blur-sm"
+              className={`movie-overlay absolute inset-0 flex flex-col justify-end ${classes.overlayPadding} transition-all duration-300opacity-100 md:opacity-0 md:group-hover:opacity-100
               }`}
             >
               {showTrailerModal && (
