@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import MovieTrailerModal from "./MovieTrailerModal";
 import { Star } from "lucide-react";
 import { toast } from "sonner";
+import { useWatchList } from "@/hooks/useWatchlist";
 
 export default function MovieCard({
   movie,
@@ -80,7 +81,12 @@ export default function MovieCard({
       toast.error("Trailer not available");
     }
   }
-
+  const { addMovie } = useWatchList();
+  function addToWatchlist(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    addMovie(movie);
+  }
   return (
     <>
       <Link href={`/movie/${id}`} className="group flex flex-col gap-4">
@@ -142,6 +148,7 @@ export default function MovieCard({
               )}
               <button
                 className={`w-full ${classes.buttonText} bg-transparent border border-white/20 text-white rounded-lg font-label-caps hover:bg-white/10 transition-colors`}
+                onClick={addToWatchlist}
               >
                 Add to List
               </button>
