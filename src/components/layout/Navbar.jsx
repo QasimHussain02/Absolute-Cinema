@@ -1,11 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Search, X } from "lucide-react";
+import { Search, X, Bell } from "lucide-react";
 import SearchDropdown from "@/components/search/SearchDropdown";
 import { useSearchResults } from "@/hooks/useSearchResult";
+import { useWatchList } from "@/hooks/useWatchlist";
 
 export default function Navbar() {
+  const { watched } = useWatchList();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
@@ -98,12 +101,15 @@ export default function Navbar() {
       <nav className="hidden md:flex bg-surface/80 backdrop-blur-xl text-primary font-body-md text-body-md fixed top-0 w-full z-50 shadow-2xl shadow-primary/10 border-b border-white/5">
         <div className="flex justify-between items-center px-margin-desktop h-20 w-full max-w-container-max mx-auto">
           {/* Left: Logo + Nav links */}
-          <div className="flex items-center gap-12">
-            <Link
-              href="/"
-              className="font-headline-md text-headline-md font-bold text-primary-container"
-            >
-              Absolute Cinema
+          <div className="flex items-center gap-6">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="Absolute Cinema logo"
+                width={130}
+                height={130}
+                className="object-contain"
+              />
             </Link>
             <ul className="flex items-center gap-8">
               <li>
@@ -132,10 +138,18 @@ export default function Navbar() {
               </li>
               <li>
                 <Link
-                  href="/"
-                  className="text-on-surface-variant font-body-md text-body-md active:scale-95 transition-transform hover:text-primary transition-colors duration-300"
+                  href="/my-list"
+                  className="relative text-on-surface-variant font-body-md text-body-md active:scale-95 transition-transform hover:text-primary transition-colors duration-300 flex items-center gap-2"
                 >
                   My List
+                  {watched.length > 0 && (
+                    <span
+                      className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-primary-container text-white font-label-caps"
+                      style={{ fontSize: "10px" }}
+                    >
+                      {watched.length}
+                    </span>
+                  )}
                 </Link>
               </li>
             </ul>
@@ -186,13 +200,11 @@ export default function Navbar() {
               </div>
             </div>
 
-            <button className="text-on-surface-variant hover:text-primary transition-colors active:scale-95">
-              <span
-                className="material-symbols-outlined"
-                style={{ fontVariationSettings: "'FILL' 0" }}
-              >
-                notifications
-              </span>
+            <button
+              className="text-on-surface-variant hover:text-primary transition-colors active:scale-95"
+              aria-label="Notifications"
+            >
+              <Bell size={20} />
             </button>
             <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10 shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -230,13 +242,18 @@ export default function Navbar() {
           </button>
 
           {/* ── Logo ── */}
-          <span
-            className={`font-headline-md text-headline-md font-bold text-primary-container select-none
-                        transition-opacity duration-200
-                        ${mobileSearchOpen ? "opacity-0" : "opacity-100"}`}
+          <Link
+            href="/"
+            className={`transition-opacity duration-200 ${mobileSearchOpen ? "opacity-0" : "opacity-100"}`}
           >
-            Absolute Cinema
-          </span>
+            <Image
+              src="/logo.png"
+              alt="Absolute Cinema logo"
+              width={36}
+              height={36}
+              className="object-contain"
+            />
+          </Link>
 
           {/* ── Search icon (collapsed state) — anchor the overlay expands from ── */}
           <button
@@ -410,6 +427,24 @@ export default function Navbar() {
                   calendar_today
                 </span>
                 Upcoming
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/my-list"
+                onClick={() => setMobileNavOpen(false)}
+                className="flex items-center gap-4 text-on-surface-variant p-4 active:translate-x-1 hover:bg-surface-container-high transition-all"
+              >
+                <span className="material-symbols-outlined">bookmark</span>
+                <span className="flex-1">My List</span>
+                {watched.length > 0 && (
+                  <span
+                    className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1 rounded-full bg-primary-container text-white font-label-caps"
+                    style={{ fontSize: "10px" }}
+                  >
+                    {watched.length}
+                  </span>
+                )}
               </Link>
             </li>
           </ul>

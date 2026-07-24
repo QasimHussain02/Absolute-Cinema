@@ -11,6 +11,7 @@ import SimilarMovies from "./SimilarMovies";
 import CastSection from "./CastSection";
 import MovieOverviewSection from "./MovieOverviewSection";
 import MovieHero from "./MovieHero";
+import MovieDetailSkeleton from "./MovieDetailSkeleton";
 
 import Chatbot from "../ai/Chatbot";
 
@@ -49,7 +50,7 @@ const MovieDetailClient = ({ id, movie }) => {
     { label: "genre", value: genre },
   ];
 
-  if (movieDetailsLoading || castLoading) return <div>loading...</div>;
+  if (movieDetailsLoading || castLoading) return <MovieDetailSkeleton />;
   if (movieDetailsError || castError)
     return (
       <div>
@@ -63,6 +64,7 @@ const MovieDetailClient = ({ id, movie }) => {
         poster_paths={poster_paths}
         movieDetails={movieDetails}
         heroMeta={heroMeta}
+        movie={movie}
       />
 
       <main className="mx-auto flex w-full max-w-container-max flex-col gap-14 px-margin-mobile py-14 md:px-margin-desktop md:gap-20 md:py-20">

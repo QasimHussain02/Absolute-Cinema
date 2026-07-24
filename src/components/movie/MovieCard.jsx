@@ -3,9 +3,10 @@ import { getMovieTrailer } from "@/services/tmdb";
 import Link from "next/link";
 import React, { useState } from "react";
 import MovieTrailerModal from "./MovieTrailerModal";
-import { Star } from "lucide-react";
+import { Star, Check, BookmarkX } from "lucide-react";
 import { toast } from "sonner";
 import { useWatchList } from "@/hooks/useWatchlist";
+import { addToWatchlist } from "../../services/watchlist";
 
 export default function MovieCard({
   movie,
@@ -15,6 +16,7 @@ export default function MovieCard({
   ratingStyle = "badge",
   size = "default",
   showOverlay = true,
+  watchlistMode = false,
 }) {
   const { id, title, release_date, genre_ids, vote_average, poster_path } =
     movie;
@@ -81,12 +83,9 @@ export default function MovieCard({
       toast.error("Trailer not available");
     }
   }
-  const { addMovie } = useWatchList();
-  function addToWatchlist(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    addMovie(movie);
-  }
+  const { addMovie, removeMovie, isAlreadyExists } = useWatchList();
+  const inList = isAlreadyExists(movie);
+
   return (
     <>
       <Link href={`/movie/${id}`} className="group flex flex-col gap-4">
@@ -134,7 +133,7 @@ export default function MovieCard({
               className={`movie-overlay absolute inset-0 flex flex-col justify-end ${classes.overlayPadding} transition-all duration-300opacity-100 md:opacity-0 md:group-hover:opacity-100
               }`}
             >
-              {showTrailerModal && (
+              {!watchlistMode && showTrailerModal && (
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -146,12 +145,44 @@ export default function MovieCard({
                   Watch Trailer
                 </button>
               )}
-              <button
-                className={`w-full ${classes.buttonText} bg-transparent border border-white/20 text-white rounded-lg font-label-caps hover:bg-white/10 transition-colors`}
-                onClick={addToWatchlist}
-              >
-                Add to List
-              </button>
+
+              {watchlistMode ? (
+                <button
+                  className={`w-full ${classes.buttonText} flex items-center justify-center gap-1.5 rounded-lg font-label-caps transition-all duration-200 border border-white/20 text-white hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-400 whitespace-nowrap`}
+                  onClick={(e) => handleRemove(e, movie, title, removeMovie)}
+                >
+                  <BookmarkX size={13} className="shrink-0" />
+                  Remove
+                </button>
+              ) : (
+                <button
+                  className={`w-full ${classes.buttonText} flex items-center justify-center gap-1.5 rounded-lg font-label-caps transition-all duration-200
+                    ${
+                      inList
+                        ? "bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-400"
+                        : "bg-transparent border border-white/20 text-white hover:bg-white/10"
+                    }`}
+                  onClick={(e) =>
+                    addToWatchlist(
+                      e,
+                      movie,
+                      inList,
+                      addMovie,
+                      removeMovie,
+                      title,
+                    )
+                  }
+                >
+                  {inList ? (
+                    <>
+                      <Check size={12} />
+                      <span>Added</span>
+                    </>
+                  ) : (
+                    "Add to Watchlist"
+                  )}
+                </button>
+              )}
             </div>
           )}
         </div>
