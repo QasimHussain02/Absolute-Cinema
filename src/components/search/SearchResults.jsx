@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "../layout/Navbar";
 import { useSearchParams } from "next/navigation";
 import { useSearchResults } from "@/hooks/useSearchResult";
 import MovieCard from "../movie/MovieCard";
@@ -172,7 +171,6 @@ export default function SearchResults() {
       `,
         }}
       />
-      <Navbar />
       {/* Main Layout Area */}
       <main className="pt-[120px] pb-24 px-[1.5rem] md:px-[4rem] min-h-screen max-w-[1440px] mx-auto">
         {/* Results Header */}

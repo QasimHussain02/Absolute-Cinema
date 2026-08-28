@@ -1,12 +1,11 @@
 import React from "react";
-import Navbar from "@/components/layout/Navbar";
+import CinematicHero from "@/components/home/CinematicHero";
 import TrendingSection from "@/components/home/TrendingSection";
-import { getSearchMovie } from "@/services/tmdb";
 
 export default async function Page() {
   return (
     <>
-      <Navbar />
+      <CinematicHero />
       <TrendingSection />
     </>
   );

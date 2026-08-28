@@ -55,3 +55,9 @@ export async function getMovieTrailer(id) {
   const { key } = officialTrailers;
   return key;
 }
+
+export async function getTrendyMovies() {
+  const data = await fetch(`${BASE_URL}/trending/movie/day?api_key=${API_KEY}`);
+  const trending = await data.json();
+  return trending;
+}
