@@ -5,6 +5,7 @@ export function useTrailer(id) {
   return useQuery({
     queryKey: ["trailerMovie", id],
     queryFn: () => getMovieTrailer(id),
+    enabled: !!id,
     staleTime: Infinity,
   });
 }

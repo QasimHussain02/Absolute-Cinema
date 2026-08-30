@@ -142,7 +142,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="Absolute Cinema"
-                className="h-9 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </Link>
             <nav className="flex items-center gap-7" aria-label="Main navigation">
@@ -311,7 +311,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Absolute Cinema"
-              className="h-8 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </Link>
 
@@ -428,7 +428,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Absolute Cinema"
-              className="h-8 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
             <div className="text-white/40 text-[11px] font-semibold tracking-widest uppercase mt-1">
               Premium Theater

@@ -1,8 +1,14 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Play, Plus, Info, Star } from "lucide-react";
+import Link from "next/link";
+import { Play, Plus, Info, Star, Check } from "lucide-react";
 import { useTrendyMovies } from "../../hooks/useTrendyMovies";
 import { useGenre } from "../../hooks/useTrendingMovies";
+import { useTrailer } from "@/hooks/useTrailer";
+import { useWatchList } from "@/hooks/useWatchlist";
+import { addToWatchlist } from "@/services/watchlist";
+import MovieTrailerModal from "@/components/movie/MovieTrailerModal";
+import { toast } from "sonner";
 
 /* ─────────────────────────────────────────────────────────────
    Slide data  (6 featured films, each with a unique Unsplash bg)
@@ -96,6 +102,8 @@ const INTERVAL_MS = 8000;
 export default function CinematicHero() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(true); // content visibility for crossfade
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
   const timerRef = useRef(null);
   const pendingRef = useRef(null); // index to transition to
   const {
@@ -124,6 +132,9 @@ export default function CinematicHero() {
       backdrop: `https://image.tmdb.org/t/p/original${movie?.backdrop_path}`,
     };
   });
+  const activeMovie = movieData[active];
+  const { data: trailerKey } = useTrailer(activeMovie?.id);
+  const { addMovie, removeMovie, isAlreadyExists } = useWatchList();
 
   /* ── start / restart the auto-advance timer ─────────────── */
   const startTimer = useCallback(() => {
@@ -185,9 +196,21 @@ export default function CinematicHero() {
 
   const slide = slides[active];
 
-  if (!slide) {
+  if (!slide || !activeMovie) {
     return null;
   }
+
+  const inWatchlist = isAlreadyExists(activeMovie);
+
+  const openTrailer = () => {
+    if (!trailerKey) {
+      toast.error("Trailer not available");
+      return;
+    }
+
+    setVideoUrl(`https://www.youtube.com/embed/${trailerKey}?autoplay=1`);
+    setIsTrailerModalOpen(true);
+  };
 
   /* ── shared transition style ─────────────────────────────── */
   const contentStyle = {
@@ -307,6 +330,8 @@ export default function CinematicHero() {
           <div className="flex flex-wrap gap-2.5 sm:gap-3">
             <button
               id="hero-cta-trailer"
+              type="button"
+              onClick={openTrailer}
               className="flex items-center gap-2 rounded-lg text-xs font-bold text-white active:scale-[0.97] sm:text-[13px]"
               style={{
                 padding: "11px 20px",
@@ -320,6 +345,17 @@ export default function CinematicHero() {
             </button>
             <button
               id="hero-cta-watchlist"
+              type="button"
+              onClick={(event) =>
+                addToWatchlist(
+                  event,
+                  activeMovie,
+                  inWatchlist,
+                  addMovie,
+                  removeMovie,
+                  slide.title,
+                )
+              }
               className="flex items-center gap-2 rounded-lg text-xs font-semibold text-white/85 active:scale-[0.97] sm:text-[13px]"
               style={{
                 padding: "11px 18px",
@@ -329,11 +365,12 @@ export default function CinematicHero() {
                 transition: "background 0.2s, transform 0.15s",
               }}
             >
-              <Plus size={15} />
-              Add to Watchlist
+              {inWatchlist ? <Check size={15} /> : <Plus size={15} />}
+              {inWatchlist ? "Added" : "Add to Watchlist"}
             </button>
-            <button
+            <Link
               id="hero-cta-details"
+              href={`/movie/${slide.id}`}
               className="flex items-center gap-2 rounded-lg text-xs font-semibold text-white/50 hover:text-white/80 active:scale-[0.97] sm:text-[13px]"
               style={{
                 padding: "11px 18px",
@@ -344,7 +381,7 @@ export default function CinematicHero() {
             >
               <Info size={14} />
               More Details
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -386,6 +423,12 @@ export default function CinematicHero() {
           ))}
         </div>
       </div>
+
+      <MovieTrailerModal
+        isOpen={isTrailerModalOpen}
+        onClose={() => setIsTrailerModalOpen(false)}
+        videoUrl={videoUrl}
+      />
     </section>
   );
 }
